@@ -1,0 +1,61 @@
+# Installing and configuring webservers
+- name: Installing and configuring feature
+  hosts: all
+  become: yes
+  gather_facts: yes
+  vars_files:
+   - ../vars/main.yaml
+
+  tasks:
+# Install Apache2
+   - name: "Installing Apache2"
+     apt:
+        name:
+         - apache2
+        state: present
+
+# Create site in apache2
+   - name: "Disable default sites"
+     ansible.builtin.template:
+      src: ../templates/apache-site.j2
+      dest: /etc/apache2/sites-available/{{site_name}}.conf
+
+   - name: Disable default site (optional)
+     command: a2dissite 000-default.conf
+
+   - name: "Enable {{site_name}} sites"
+     ansible.builtin.command: a2ensite {{site_name}}
+      
+
+   - name: Create directory for site {{site_name}}
+     ansible.builtin.file:
+      path: "{{document_root}}{{site_name}}"
+      state: directory
+      owner: www-data
+      group: www-data
+      mode: 0755
+
+   - name: sample index.html
+     ansible.builtin.template: 
+      src: ../templates/index.html.j2
+      dest: "{{document_root}}{{site_name}}/index.html"
+      
+   - name: "start the apache2 service"
+     ansible.builtin.service:
+      name: apache2
+      state: reloaded
+      enabled: yes
+      
+    
+      
+
+
+
+      
+     
+
+      
+
+
+
+

@@ -1,0 +1,32 @@
+# playbook for preparing the linux instance 
+- name: "Preparing the linux instances"
+  hosts: all_servers
+  # vars:
+  vars_files:
+   - ../vars/main.yaml
+  vars:
+    http_port: 8080
+    max_clients: 200
+  become: yes
+  gather_facts: no
+  tasks:
+   - name: "Update the packages"
+     apt:
+      update_cache: yes
+     tags: update_cache
+  
+   - name: Print date and time
+     ansible.builtin.debug:
+      msg: "List variable: {{ nginx_port }}"
+
+   - name: "Upgrade the dist packages"
+     ansible.builtin.apt:
+      upgrade: dist
+     tags: upgrade_packages
+
+# Hardening tasks
+
+
+
+      
+     

@@ -1,0 +1,7 @@
+- name: "Reboot instances"
+  hosts: all_servers
+  become_user: root
+  tasks:
+   - name: "Reboot"
+     command: reboot
+      

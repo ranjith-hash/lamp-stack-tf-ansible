@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+	
+	ServerName {{site_name}}
+	ServerAlias {{site_name_alias}}
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot {{document_root}}{{site_name}}
+	
+	<Directory "{{document_root}}{{site_name}}">
+		Order allow,deny
+		AllowOverride All
+		Allow from all
+		Require all granted
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/{{site_name}}_error.log
+	CustomLog ${APACHE_LOG_DIR}/{{site_name}}_access.log combined
+</VirtualHost>
